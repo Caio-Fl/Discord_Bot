@@ -2,7 +2,6 @@ streamlit
 plotly
 pandas
 requests
-time
 json
 PIL
 webbrowser
