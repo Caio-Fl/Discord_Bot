@@ -221,7 +221,7 @@ if st.session_state.access_granted:
                             st.session_state.log += nova_linha
                             log_area.text(st.session_state.log)
                         send_time = 60*random.randint(min_time, max_time) # envio aleatório na faixa de tempo especificados em min_time e max_time
-                        nova_linha = f"\nSending Next Message in " + str(send_time/60) + " min"
+                        nova_linha = f"\nSending Next Message in " + str(send_time/60) + " min\n"
                         st.session_state.log += nova_linha
                         log_area.text(st.session_state.log)
                         i += 1
@@ -237,6 +237,6 @@ if st.session_state.access_granted:
             st.session_state.log += nova_linha
             log_area.text(st.session_state.log)
 else:
-    st.write("Please Click on Follow Button to Verify if you are Following our 𝕏.")
+    st.write("")
 
 
