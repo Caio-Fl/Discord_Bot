@@ -6,7 +6,6 @@ import time
 import json
 import random
 from random import randrange
-from PIL import Image
 from datetime import datetime, timezone
 import webbrowser
 
