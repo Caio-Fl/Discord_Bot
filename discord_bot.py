@@ -4,13 +4,11 @@ import plotly.express as px
 import requests
 import time
 import json
-import threading
 import random
-import pyautogui
-from pynput.keyboard import Listener, KeyCode
 from random import randrange
 from PIL import Image
 from datetime import datetime, timezone
+import webbrowser
 
 image = "https://github.com/Caio-Fl/Airdrop_Points/blob/main/disc.png?raw=true"
 st.image(image,use_container_width=True)
@@ -38,13 +36,9 @@ if 'access_granted' not in st.session_state:
     st.session_state.access_granted = False
 
 if not st.session_state.access_granted:
-    if st.button('Liberate App'):
+    if st.button('Contribute to more content like this, Follow on 𝕏'):
         # Redirecionar o usuário para o seu perfil
-        st.markdown(
-            "<p style='font-size:18px;'>Contribute to more content like this, "
-            "<a href='https://x.com/CaioFlemin2089' target='_blank'>Follow on 𝕏</a></p>",
-            unsafe_allow_html=True
-        )
+        webbrowser.open_new_tab("https://x.com/CaioFlemin2089")
         st.session_state.access_granted = True        
         time.sleep(11)
         st.rerun() 
@@ -241,6 +235,6 @@ if st.session_state.access_granted:
             st.session_state.log += nova_linha
             log_area.text(st.session_state.log)
 else:
-    st.write("Please Click on Follow Button to Verify if you are Following our 𝕏.")
+    st.write("")
 
 
