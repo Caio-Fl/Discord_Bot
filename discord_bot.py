@@ -9,7 +9,7 @@ from random import randrange
 from datetime import datetime, timezone
 import webbrowser
 
-image = "https://github.com/Caio-Fl/Discord_Bot/blob/main/disc.png?raw=true"
+image = "https://github.com/Caio-Fl/Discord_Bot/blob/master/disc.png?raw=true"
 st.image(image,use_container_width=True)
 
 st.subheader("Wellcome to Discord Bot 🤖 App")
