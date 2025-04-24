@@ -7,7 +7,6 @@ import json
 import random
 from random import randrange
 from datetime import datetime, timezone
-import webbrowser
 
 image = "https://github.com/Caio-Fl/Discord_Bot/blob/master/disc.png?raw=true"
 st.image(image,use_container_width=True)
@@ -35,9 +34,13 @@ if 'access_granted' not in st.session_state:
     st.session_state.access_granted = False
 
 if not st.session_state.access_granted:
-    if st.button('Contribute to more content like this, Follow on 𝕏'):
+    if st.button('Liberate App'):
         # Redirecionar o usuário para o seu perfil
-        webbrowser.open_new_tab("https://x.com/CaioFlemin2089")
+        st.markdown(
+            "<p style='font-size:18px;'>Contribute to more content like this, "
+            "<a href='https://x.com/CaioFlemin2089' target='_blank'>Follow on 𝕏</a></p>",
+            unsafe_allow_html=True
+        )
         st.session_state.access_granted = True        
         time.sleep(11)
         st.rerun() 
@@ -234,6 +237,6 @@ if st.session_state.access_granted:
             st.session_state.log += nova_linha
             log_area.text(st.session_state.log)
 else:
-    st.write("")
+    st.write("Please Click on Follow Button to Verify if you are Following our 𝕏.")
 
 
