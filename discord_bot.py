@@ -152,14 +152,14 @@ if st.session_state.access_granted:
     if check:
         col1, col2 = st.columns(2) 
         with col1:
-            lower_time = st.number_input("Lower Rest Time in hour (0-24h)",
+            lower_time = st.number_input("Lower Rest Time (UTC) in hour (0-24h)",
             min_value=0,
             max_value=24,
             value=0,   # valor padrão
             step=1
         )
         with col2:
-            higher_time = st.number_input("Higher Rest Time in hour (0-24h)",
+            higher_time = st.number_input("Higher Rest Time (UTC) in hour (0-24h)",
             min_value=0,
             max_value=24,
             value=6,   # valor padrão
@@ -199,8 +199,9 @@ if st.session_state.access_granted:
             while True:
                 st.session_state.log = ""  # limpa o log antes de começar
                 now_utc = datetime.now().now(timezone.utc)
+                
                 if lower_time <= now_utc.hour < higher_time:
-                    nova_linha = f"Time to rest the bot until {higher_time} h"
+                    nova_linha = f"Time to rest the bot until {higher_time} h UTC"
                     st.session_state.log += nova_linha
                     log_area.text(st.session_state.log)
                 else:
