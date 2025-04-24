@@ -10,7 +10,7 @@ from PIL import Image
 from datetime import datetime, timezone
 import webbrowser
 
-image = "https://github.com/Caio-Fl/Airdrop_Points/blob/main/disc.png?raw=true"
+image = "https://github.com/Caio-Fl/Discord_Bot/blob/main/disc.png?raw=true"
 st.image(image,use_container_width=True)
 
 st.subheader("Wellcome to Discord Bot 🤖 App")
