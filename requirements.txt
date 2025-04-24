@@ -3,4 +3,3 @@ plotly
 pandas
 requests
 Pillow
-webbrowser
