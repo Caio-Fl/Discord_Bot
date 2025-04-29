@@ -203,7 +203,7 @@ if st.session_state.access_granted:
 
     # Use the checkbox value
     lower_time = 0
-    higher_time = 0
+    higher_time = 6
     if check:
         col1, col2 = st.columns(2) 
         with col1:
