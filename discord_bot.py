@@ -148,7 +148,8 @@ if st.session_state.access_granted:
     check = st.checkbox("Enable Rest Time Interval (Time interval where none Message will be sent)")
 
     # Use the checkbox value
-
+    lower_time = 0
+    upper_time = 6
     if check:
         col1, col2 = st.columns(2) 
         with col1:
