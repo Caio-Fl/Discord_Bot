@@ -9,7 +9,6 @@ from random import randrange
 from datetime import datetime, timezone
 import pandas as pd
 import io
-import ast
 
 image = "https://github.com/Caio-Fl/Discord_Bot/blob/master/disc.png?raw=true"
 st.image(image,use_container_width=True)
