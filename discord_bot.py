@@ -73,7 +73,7 @@ if not st.session_state.access_granted:
             unsafe_allow_html=True
         )
         st.session_state.access_granted = True        
-        time.sleep(3)
+        time.sleep(10)
         st.rerun() 
     
     #st.rerun()
