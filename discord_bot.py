@@ -7,6 +7,9 @@ import json
 import random
 from random import randrange
 from datetime import datetime, timezone
+import pandas as pd
+import io
+import ast
 
 image = "https://github.com/Caio-Fl/Discord_Bot/blob/master/disc.png?raw=true"
 st.image(image,use_container_width=True)
@@ -29,6 +32,34 @@ st.write("")
 
 profile_url = "https://x.com/CaioFlemin2089"
 
+# Função para salvar configurações
+def salvar_configuracoes():
+    df = pd.DataFrame({
+        "Request_URLs": ['\n'.join(Request_URLs)],
+        "Servers_Name": ['\n'.join(Servers_Name)],
+        "Phrases": ['\n'.join(Phrases)],
+        "Authorization": [Authorization],
+        "min_time": [min_time],
+        "max_time": [max_time],
+        "lower_time": [lower_time],
+        "higher_time": [higher_time],
+    })
+    return df
+
+# Função para carregar configurações
+def carregar_configuracoes(df):
+    Request_URLs = df["Request_URLs"].iloc[0].splitlines()
+    Servers_Name = df["Servers_Name"].iloc[0].splitlines()
+    Phrases = df["Phrases"].iloc[0].splitlines()
+    Authorization = df["Authorization"].iloc[0]
+    min_time = int(df["min_time"].iloc[0])
+    max_time = int(df["max_time"].iloc[0])
+    # lower_time e higher_time, tratamento para NaN
+    lower_time = int(df["lower_time"].iloc[0]) if not pd.isna(df["lower_time"].iloc[0]) else 0
+    higher_time = int(df["higher_time"].iloc[0]) if not pd.isna(df["higher_time"].iloc[0]) else 0
+    return Request_URLs, Servers_Name, Phrases, Authorization, min_time, max_time, lower_time, higher_time
+
+
 # Criar uma variável de controle de acesso
 if 'access_granted' not in st.session_state:
     st.session_state.access_granted = False
@@ -42,7 +73,7 @@ if not st.session_state.access_granted:
             unsafe_allow_html=True
         )
         st.session_state.access_granted = True        
-        time.sleep(11)
+        time.sleep(3)
         st.rerun() 
     
     #st.rerun()
@@ -59,8 +90,30 @@ if st.session_state.access_granted:
 
     st.subheader("⚙️ Bot Configuration")
 
-    user_input1 = st.text_area("Insert the Discord Chat URLs that you Desire to Send Messages (one by line):")
+    #Default Values
+    Request_URLs = """""" 
+    Servers_Name = """""" 
+    Phrases = """"""  
+    Authorization = "" 
+    min_time = 1 
+    max_time = 1 
+    lower_time = 0 
+    higher_time = 0
 
+    # Upload para carregar configurações
+    uploaded_file = st.file_uploader("Upload Configuration CSV", type="csv")
+
+    if uploaded_file is not None:
+        df = pd.read_csv(uploaded_file)
+        Request_URLs, Servers_Name, Phrases, Authorization, min_time, max_time, lower_time, higher_time = carregar_configuracoes(df)
+        Request_URLs = '\n'.join(Request_URLs) + '\n'
+        Servers_Name = '\n'.join(Servers_Name) + '\n'
+        Phrases = '\n'.join(Phrases) + '\n'
+        st.success("✅ Configuration Loaded Successfully!")
+        # Você pode atualizar os campos no app ou só usar direto as variáveis carregadas
+
+    user_input1 = st.text_area("Insert the Discord Chat URLs that you Desire to Send Messages (one by line):",
+                               value = Request_URLs)
     # Separar em lista de strings
     Request_URLs = []
     if user_input1:
@@ -68,7 +121,8 @@ if st.session_state.access_granted:
         #st.write("Lista de Chats do Discord:")
         #st.write(Request_URLs)
 
-    user_input2 = st.text_area("Insert the name o the Discord Channels (one by line):")
+    user_input2 = st.text_area("Insert the name o the Discord Channels (one by line):",
+                               value = Servers_Name)
 
     # Separar em lista de strings
     if user_input2:
@@ -76,7 +130,7 @@ if st.session_state.access_granted:
         #st.write("Lista de Canais:")
         #st.write(Servers_Name)
 
-    user_input3 = st.text_area("Insert the List of Messages to be Sent (one by line):")
+    user_input3 = st.text_area("Insert the List of Messages to be Sent (one by line):",value = Phrases)
 
     # Separar em lista de strings
     if user_input3:
@@ -87,7 +141,7 @@ if st.session_state.access_granted:
     # Separar em lista de strings
     Authorization = st.text_input(
         "Insert the Authorization Code (Exclusive of your user, do not disclose it!):",
-        value = "",   # valor padrão
+        value = Authorization,
         type = "password"
     )
 
@@ -132,7 +186,7 @@ if st.session_state.access_granted:
         "Minimum time (in minutes) to Resend the List of Messages: ",
         min_value=1,
         max_value=1000000,
-        value=1,   # valor padrão
+        value=min_time,   # valor padrão
         step=1
         )
     with col2:
@@ -140,7 +194,7 @@ if st.session_state.access_granted:
         "Maximum time (in minutes) to Resend the List of Messages: ",
         min_value=1,
         max_value=1000000,
-        value=1,   # valor padrão
+        value=max_time,   # valor padrão
         step=1
         )
 
@@ -148,27 +202,44 @@ if st.session_state.access_granted:
     check = st.checkbox("Enable Rest Time Interval (Time interval where none Message will be sent)")
 
     # Use the checkbox value
-
+    lower_time = 0
+    higher_time = 0
     if check:
         col1, col2 = st.columns(2) 
         with col1:
             lower_time = st.number_input("Lower Rest Time (UTC) in hour (0-24h)",
             min_value=0,
             max_value=24,
-            value=0,   # valor padrão
+            value=lower_time,   # valor padrão
             step=1
         )
         with col2:
             higher_time = st.number_input("Higher Rest Time (UTC) in hour (0-24h)",
             min_value=0,
             max_value=24,
-            value=6,   # valor padrão
+            value=higher_time,   # valor padrão
             step=1
         )
         if lower_time >= higher_time:
             lower_time = higher_time
             higher_time = lower_time + 6
-
+    
+    # Botão para salvar configurações
+    if st.button("💾 Save Configuration"):
+        df = salvar_configuracoes()
+        # Transformar listas em texto separado por quebras de linha
+        for col in ["Request_URLs", "Servers_Name", "Phrases"]:
+            if isinstance(df[col].iloc[0], list):
+                df[col] = df[col].apply(lambda x: "\n".join(map(str, x)))
+        # Agora exporta para CSV normalmente
+        csv = df.to_csv(index=False).encode('utf-8')
+        # Botão de download
+        st.download_button(
+            label="📥 Download Configuration CSV",
+            data=csv,
+            file_name='discord_bot_config.csv',
+            mime='text/csv'
+        )
 
     st.write("")
     st.subheader("▶️ Bot Activation")
