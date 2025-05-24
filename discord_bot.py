@@ -23,7 +23,7 @@ This Bot will send each message to each channel in a random time range [minimum,
 Be careful not to choose a time range that is too short, as there is a high chance that you will be identified as a Bot 
 (I recommend using an interval of at least 10 - 60 minutes, but it will depend on the discord, as some are more strict than others). 
 Use a reasonably sized message list (at least 10 different messages) and change them every day that you activate it. 
-I also recommend checking at least once a day. If you are blocked on the server, an error may occur during execution. Verify how to use [here](https://x.com/CaioFlemin2089/status/1916149598847959457)!
+I also recommend checking at least once a day. If you are blocked on the server, an error may occur during execution. 👉 [Verify how to use here](https://x.com/CaioFlemin2089/status/1916149598847959457)
 </p>
 """
 st.markdown(aviso, unsafe_allow_html=True)
